@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Meal Preferences</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        /* Global styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #9b0038;
+            color: #333;
+            scroll-behavior: smooth; /* Smooth scroll for the whole page */
+        }
+
+.timeline {
+            width: 90%;
+            max-width: 1200px;
+            margin: 50px auto;
+            position: relative;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: #9b0038;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+        .entry {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+        }
+        .entry:nth-child(odd) {
+            left: 0;
+        }
+        .entry:nth-child(even) {
+            left: 50%;
+        }
+        .entry .date {
+            font-weight: bold;
+            color: #9b0038;
+        }
+        .entry .content {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .entry:nth-child(odd) .content::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            right: -10px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent transparent #fff;
+        }
+        .entry:nth-child(even) .content::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: -10px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent #fff transparent transparent;
+        }
+
+        /* Horizontal Navigation Bar */
+        nav {
+            background-color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin-right: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #9b0038;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #cc0055;
+        }
+
+        /* Section styling */
+        section {
+            padding: 80px 20px;
+            margin-top: 60px;
+            min-height: 100vh;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #9b0038;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        label {
+            display: block;
+            font-size: 1.2em;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input[type="text"], input[type="date"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1.1em;
+        }
+
+        /* Styling for checkboxes */
+        .meal-group {
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .checkbox-group label {
+            font-size: 1.2em;
+            margin-right: 20px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #9b0038;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #b80044;
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        /* Services section */
+        #services h2 {
+            margin-bottom: 20px;
+        }
+
+        /* Contact section styling */
+        #contact .contact-info {
+            margin-bottom: 20px;
+        }
+
+        #contact .contact-info div {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Horizontal Navigation bar -->
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home">
+        <div class="container">
+            <h1>Student Meal Preferences</h1>
+
+            <!-- Meal selection form -->
+            <form id="mealForm">
+                <label for="rollNumber">Roll Number:</label>
+                <input type="text" id="rollNumber" name="rollNumber" placeholder="Enter your roll number (CH.SC/EN.U4XXXnnnnn)" required>
+
+                <label for="mealDate">Select Day You Don't Want Meals:</label>
+                <input type="date" id="mealDate" name="mealDate" required>
+
+                <div class="meal-group">
+                    <label>Select Meal(s) to Skip:</label>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" name="mealType" value="Breakfast"> Breakfast
+                        </label>
+                        <label>
+                            <input type="checkbox" name="mealType" value="Lunch"> Lunch
+                        </label>
+                        <label>
+                            <input type="checkbox" name="mealType" value="Dinner"> Dinner
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit">Submit Preferences</button>
+            </form>
+
+            <div class="message" id="message"></div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="timeline">
+        <div class="entry">
+            <div class="date">2005 - Food for All Foundation</div>
+            <div class="content">
+                The foundation started distributing surplus food to low-income communities across urban areas.
+            </div>
+        </div>
+        <div class="entry">
+            <div class="date">2010 - Global Hunger Relief</div>
+            <div class="content">
+                Expanded operations globally, ensuring that no food goes to waste while addressing hunger.
+            </div>
+        </div>
+        <div class="entry">
+            <div class="date">2015 - Hope Mission Trust</div>
+            <div class="content">
+                Introduced sustainable farming solutions alongside food distribution in rural regions.
+            </div>
+        </div>
+        <div class="entry">
+            <div class="date">2020 - Charity Meals Network</div>
+            <div class="content">
+                Developed an online platform for connecting food donors with local charities, helping prevent food wastage.
+            </div>
+        </div>
+    </div>
+
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2>Contact Mess Catering</h2>
+            <div class="contact-info">
+                <div>Email: support@messcatering.com</div>
+                <div>Phone: +123 456 7890</div>
+                <div>Address: 123 Campus Ave, University Town</div>
+            </div>
+            <form id="contactForm">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Your Email:</label>
+                <input type="text" id="email" name="email" required>
+
+                <label for="message">Your Message:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+
+                <button type="submit">Send Message</button>
+            </form>
+
+            <div class="contact-message" id="contactMessage"></div>
+        </div>
+    </section>
+
+    <!-- JavaScript for form submission -->
+    <script>
+        // Meal form submission
+        document.getElementById("mealForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const rollNumber = document.getElementById("rollNumber").value;
+            const rollNumberPattern = /^CH\.(SC|EN)\.U4(EEE|CSE|CCE|CYS|AIE)\d{5}$/;
+
+            if (!rollNumberPattern.test(rollNumber)) {
+                alert("Invalid Roll Number format. Please use the format: CH.SC/EN.U4XXXnnnnn");
+                return;
+            }
+
+            const mealDate = document.getElementById("mealDate").value;
+            const selectedMeals = document.querySelectorAll('input[name="mealType"]:checked');
+
+            if (selectedMeals.length === 0) {
+                alert("Please select at least one meal to skip.");
+                return;
+            }
+
+            let mealsToSkip = Array.from(selectedMeals).map(meal => meal.value).join(', ');
+
+            let message = Thank you! Your meal preferences have been recorded for roll number ${rollNumber}. You will skip ${mealsToSkip} on ${mealDate}.;
+
+            document.getElementById("message").innerText = message;
+
+            // Display thank you dialog
+            alert("Thank you! Your meal preferences have been recorded.");
+        });
+
+        // Contact form submission
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const message = document.getElementById("message").value;
+
+            document.getElementById("contactMessage").innerText = Thank you, ${name}! We have received your message. Our team will contact you at ${email} soon.;
+        });
+    </script>
+
+</body>
+</html>
